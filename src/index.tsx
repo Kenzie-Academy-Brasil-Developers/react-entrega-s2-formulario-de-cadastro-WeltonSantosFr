@@ -4,9 +4,11 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import UserProvider from "./contexts/UserContexts";
-import TechProvider from "./contexts/TechContexts";
+import { TechProvider } from "./contexts/TechContexts";
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+const root = ReactDOM.createRoot(
+  document.getElementById("root") as HTMLElement
+);
 root.render(
   <React.StrictMode>
     <UserProvider>

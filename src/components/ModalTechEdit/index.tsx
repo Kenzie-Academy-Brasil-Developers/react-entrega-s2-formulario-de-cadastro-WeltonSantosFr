@@ -12,7 +12,16 @@ import { ModalStyled } from "./styles";
 
 import { TechContext } from "../../contexts/TechContexts";
 
-const ModalTechEdit = ({ techs, setTechs }) => {
+interface ITechs {
+  techs: Array<object>;
+  setTechs: Function;
+}
+
+interface IData {
+  status?: string;
+}
+
+const ModalTechEdit = ({ techs, setTechs }: ITechs) => {
   const [token] = useState(window.localStorage.getItem("userToken"));
   const [userId] = useState(window.localStorage.getItem("userId"));
   const { atual } = useContext(TechContext);
@@ -29,7 +38,7 @@ const ModalTechEdit = ({ techs, setTechs }) => {
     resolver: yupResolver(techScheema),
   });
 
-  const onSubmitEditFunction = (data) => {
+  const onSubmitEditFunction = (data: IData) => {
     axios
       .put(`https://kenziehub.herokuapp.com/users/techs/${atual}`, data, {
         headers: {
@@ -141,28 +150,30 @@ const ModalTechEdit = ({ techs, setTechs }) => {
         </div>
         <div className="form--div">
           <form>
-            <label htmlFor="">Selecionar status</label>
-            <select {...register("status")}>
-              <option value="">Selecione</option>
-              <option value="iniciante">Iniciante</option>
-              <option value="intermediario">Intermediário</option>
-              <option value="avancado">Avançado</option>
-            </select>
-            <p>{errors.status?.message}</p>
-            <div className="buttons">
-              <button onClick={handleSubmit(onSubmitEditFunction)}>
-                Editar Tecnologia
-              </button>
-              <button
-                className="delete"
-                onClick={(e) => {
-                  e.preventDefault();
-                  onSubmitDeleteFunction();
-                }}
-              >
-                Excluir Tecnologia
-              </button>
-            </div>
+            <>
+              <label htmlFor="">Selecionar status</label>
+              <select {...register("status")}>
+                <option value="">Selecione</option>
+                <option value="iniciante">Iniciante</option>
+                <option value="intermediario">Intermediário</option>
+                <option value="avancado">Avançado</option>
+              </select>
+              {errors?.status?.message}
+              <div className="buttons">
+                <button onClick={handleSubmit(onSubmitEditFunction)}>
+                  Editar Tecnologia
+                </button>
+                <button
+                  className="delete"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onSubmitDeleteFunction();
+                  }}
+                >
+                  Excluir Tecnologia
+                </button>
+              </div>
+            </>
           </form>
         </div>
       </ModalStyled>

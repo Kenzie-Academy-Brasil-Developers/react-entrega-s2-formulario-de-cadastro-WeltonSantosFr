@@ -6,7 +6,18 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { TechContext } from "../../contexts/TechContexts";
 
-const HomeMain = ({ techs, setTechs }) => {
+interface ITechs {
+  techs: Array<ITech>;
+  setTechs: Function;
+}
+
+interface ITech {
+  id?: string;
+  title?: string;
+  status?: string;
+}
+
+const HomeMain = ({ techs, setTechs }: ITechs) => {
   const userId = window.localStorage.getItem("userId");
   const { setAtual } = useContext(TechContext);
 

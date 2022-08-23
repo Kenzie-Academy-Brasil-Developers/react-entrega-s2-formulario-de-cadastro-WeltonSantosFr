@@ -10,7 +10,16 @@ import CloseSignIcon from "../CloseSignIcon";
 import { useNavigate } from "react-router-dom";
 import { ModalStyled } from "./styles";
 
-const ModalTech = ({ techs, setTechs }) => {
+interface ITechs {
+  techs: Array<object>;
+  setTechs: Function;
+}
+
+interface IData {
+  status?: string;
+}
+
+const ModalTech = ({ techs, setTechs }: ITechs) => {
   const [token] = useState(window.localStorage.getItem("userToken"));
 
   const techScheema = yup.object().shape({
@@ -26,11 +35,11 @@ const ModalTech = ({ techs, setTechs }) => {
     resolver: yupResolver(techScheema),
   });
 
-  const onSubmitFunction = (data) => {
+  const onSubmitFunction = (data: IData) => {
     createTech(data);
   };
 
-  function createTech(data) {
+  function createTech(data: IData) {
     axios
       .post(`https://kenziehub.herokuapp.com/users/techs`, data, {
         headers: {
@@ -107,20 +116,22 @@ const ModalTech = ({ techs, setTechs }) => {
         </div>
         <div className="form--div">
           <form>
-            <label htmlFor="">Nome</label>
-            <input type="text" {...register("title")} />
-            <p>{errors.title?.message}</p>
-            <label htmlFor="">Selecionar status</label>
-            <select {...register("status")}>
-              <option value="">Selecione</option>
-              <option value="iniciante">Iniciante</option>
-              <option value="intermediario">Intermediário</option>
-              <option value="avancado">Avançado</option>
-            </select>
-            <p>{errors.status?.message}</p>
-            <button onClick={handleSubmit(onSubmitFunction)}>
-              Cadastrar Tecnologia
-            </button>
+            <>
+              <label htmlFor="">Nome</label>
+              <input type="text" {...register("title")} />
+              {errors.title?.message}
+              <label htmlFor="">Selecionar status</label>
+              <select {...register("status")}>
+                <option value="">Selecione</option>
+                <option value="iniciante">Iniciante</option>
+                <option value="intermediario">Intermediário</option>
+                <option value="avancado">Avançado</option>
+              </select>
+              {errors.status?.message}
+              <button onClick={handleSubmit(onSubmitFunction)}>
+                Cadastrar Tecnologia
+              </button>
+            </>
           </form>
         </div>
       </ModalStyled>

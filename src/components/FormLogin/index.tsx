@@ -24,7 +24,12 @@ const FormLogin = () => {
     resolver: yupResolver(scheema),
   });
 
-  const onSubmitFunction = (data) => {
+  interface IData {
+    email?: string;
+    password?: string;
+  }
+
+  const onSubmitFunction = (data: IData) => {
     handleLogin(data);
   };
 
@@ -50,24 +55,26 @@ const FormLogin = () => {
         />
       </>
       <form onSubmit={handleSubmit(onSubmitFunction)}>
-        <h3>Login</h3>
-        <label htmlFor="email">Email</label>
-        <input
-          type="email"
-          placeholder="Digite aqui seu email"
-          {...register("email")}
-        />
-        {<p>{errors.email?.message}</p>}
-        <label htmlFor="password">Senha</label>
-        <input
-          type="password"
-          placeholder="Digite aqui sua senha"
-          {...register("password")}
-        />
-        {<p>{errors.password?.message}</p>}
-        <button>Enviar</button>
-        <p>Ainda não possui uma conta?</p>
-        <Link to="/register">Cadastre-se</Link>
+        <>
+          <h3>Login</h3>
+          <label htmlFor="email">Email</label>
+          <input
+            type="email"
+            placeholder="Digite aqui seu email"
+            {...register("email")}
+          />
+          {errors.email?.message}
+          <label htmlFor="password">Senha</label>
+          <input
+            type="password"
+            placeholder="Digite aqui sua senha"
+            {...register("password")}
+          />
+          {errors.password?.message}
+          <button>Enviar</button>
+          <p>Ainda não possui uma conta?</p>
+          <Link to="/register">Cadastre-se</Link>
+        </>
       </form>
     </MainLogin>
   );

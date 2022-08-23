@@ -1,14 +1,45 @@
-import React, { useState } from "react";
+import React, { ReactNode, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 
 import { createContext } from "react";
 
-export const UserContext = createContext({});
+export interface IChildren {
+  children: ReactNode;
+}
 
-const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(false);
-  function handleLogin(data) {
+export interface ILoginData {
+  email: string;
+  password: string;
+}
+
+export interface IRegisterData {
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  bio: string;
+  contact: string;
+  course_module: string;
+}
+
+export interface IUser {
+  name: string;
+  course_module: string;
+}
+
+export interface IUserContext {
+  handleLogin: Function;
+  handleRegister: Function;
+  user: IUser;
+  setUser: Function;
+}
+
+export const UserContext = createContext<IUserContext>({} as IUserContext);
+
+const UserProvider = ({ children }: IChildren) => {
+  const [user, setUser] = useState<IUser>({ name: "", course_module: "" });
+  function handleLogin(data: ILoginData) {
     axios
       .post("https://kenziehub.herokuapp.com/sessions", data)
       .then((res) => {
@@ -49,7 +80,7 @@ const UserProvider = ({ children }) => {
       });
   }
 
-  function handleRegister(data) {
+  function handleRegister(data: IRegisterData) {
     axios
       .post("https://kenziehub.herokuapp.com/users", data)
       .then((res) => {
@@ -65,7 +96,10 @@ const UserProvider = ({ children }) => {
             progress: undefined,
           });
 
-          setUser(true);
+          setUser({
+            name: res.data.user.name,
+            course_module: res.data.user.course_module,
+          });
         }
       })
       .catch((err) => {

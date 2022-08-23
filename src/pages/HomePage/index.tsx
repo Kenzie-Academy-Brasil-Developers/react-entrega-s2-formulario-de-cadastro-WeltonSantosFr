@@ -5,7 +5,12 @@ import HomeMain from "../../components/HomeMain";
 import UserHeader from "../../components/UserHeader";
 import { motion } from "framer-motion";
 
-const HomePage = ({ techs, setTechs }) => {
+interface ITechs {
+  techs: Array<object>;
+  setTechs: Function;
+}
+
+const HomePage = ({ techs, setTechs }: ITechs) => {
   return (
     <motion.div
       initial={{ x: 0, y: -100, scale: 1, rotate: 0 }}
